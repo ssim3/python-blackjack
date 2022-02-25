@@ -67,7 +67,6 @@ def game(player_list):
     dealer = Player("Dealer", 1000000000)
     bet = int(input("\nEnter your bet (Maximum 100000): "))
     
-    print("\n DEALER WILL NOW DEAL OUT CARDS")
 
     # SUBTRACTING THE BETS FROM EACH PLAYER
     for i in player_list:
@@ -76,14 +75,14 @@ def game(player_list):
             i.bet(bet)          
             print(i.cash)
         else:
-            print("{} is too broke to bet, removed from game.".format(i.name))
-            player_list.remove(i)
+            print("{} is too broke to bet, cash will now be negative.".format(i.name))
+            
 
     print(" ------------------------------------- ")
     print("\n CARDS WILL NOW BE DRAWN!")
 
     player_cards = []
-    
+
 
     
 
