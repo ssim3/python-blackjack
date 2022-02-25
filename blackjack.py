@@ -6,6 +6,7 @@ class Player:
     def __init__(self, input_name, input_cash):
         self.name = input_name
         self.cash = input_cash
+        self.cards = {"card1": 0, "card2": 0}
 
     def __repr__(self):
         info = "Name = {} \nCash = {}".format(self.name, self.cash)
@@ -80,9 +81,11 @@ def game(player_list):
         
             
     print(valid_players)
-
+    
     print("\n ------------------------------------- ")
     print("\nCARDS WILL NOW BE DRAWN!")
+
+    
 
     
 
