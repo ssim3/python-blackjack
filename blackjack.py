@@ -43,6 +43,5 @@ a88aaaa8P'  Y8aa8P     88    88aaaaa88a 88     88 88     88    a88aaaa8P' 88    
     for i in players:
         print(i) 
 
-intro()
 
     
