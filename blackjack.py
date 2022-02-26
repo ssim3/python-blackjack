@@ -43,9 +43,6 @@ a88aaaa8P'  Y8aa8P     88    88aaaaa88a 88     88 88     88    a88aaaa8P' 88    
         name = input("\nPlayer {}, input your name: ".format(i + 1))
         cash = int(input("Player {}, input your cash: ".format(i + 1)))
         players.append(Player(name, cash))
-
-    for i in players:
-        print(i) 
     
     bets(players)
 
