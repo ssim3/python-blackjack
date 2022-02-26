@@ -133,7 +133,7 @@ def game(players, bet):
     print("Dealer's cards are {} and {}. Total is {}".format(dealer_card1, dealer_card2, dealer_total))
 
     # DEALER DRAWS CARD IF TOTAL IS LESS THAN 15
-    while (dealer_total < 15):
+    while (dealer_total <= 15):
         new_card = random.choice(list(cards))
         dealer_total += cards.pop(new_card)
         print("Dealer draws a {}!, Dealer's total is now {}".format(new_card, dealer_total))
