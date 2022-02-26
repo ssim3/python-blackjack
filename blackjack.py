@@ -6,7 +6,7 @@ class Player:
     def __init__(self, input_name, input_cash):
         self.name = input_name
         self.cash = input_cash
-        self.cards = {"card1": 0, "card2": 0, "total": 0}
+        self.total = 0
 
     def __repr__(self):
         info = "Name = {} \nCash = {}".format(self.name, self.cash)
@@ -18,7 +18,7 @@ class Player:
     def win(self, winnings):
         self.cash += winnings
 
-
+# Welcomes player and gets the number of players and their respective names
 def intro():
 
     print("""  
@@ -47,13 +47,11 @@ a88aaaa8P'  Y8aa8P     88    88aaaaa88a 88     88 88     88    a88aaaa8P' 88    
     for i in players:
         print(i) 
     
-    return players
+    bets(players)
 
+# User enters the bet, checks if players hae enough money
 def bets(player_list):
 
-    
-
-    
     bet = int(input("\nEnter your bet (Maximum 100000): "))
     
     valid_players = []
@@ -77,12 +75,6 @@ def bets(player_list):
     
 def game(players, bet):
     
-    dealer = Player("Dealer", 1000000000)
-
-    players.append(dealer)
-
-    print(players)
-
     cards = {"Ace of Clubs": 1, "Ace of Diamonds": 1, "Ace of Hearts": 1, "Ace of Spades": 1, 
     "2 of Clubs": 2, "2 of Diamonds": 2, "2 of Hearts": 2, "2 of Spades": 2,
     "3 of Clubs": 3, "3 of Diamonds": 3, "3 of Hearts": 3, "3 of Spades": 3,
@@ -97,29 +89,94 @@ def game(players, bet):
     "Queen of Clubs": 10, "Queen of Diamonds": 10, "Queen of Hearts": 10, "Queen of Spades": 10,
     "Jack of Clubs": 10, "Jack of Diamonds": 10, "Jack of Hearts": 10, "Jack of Spades": 10}
 
-    drawn_cards = []
     
     # for i in players
     # pick a random card from dictionary, remove that card, add it to new dictionary
     # Each player dict should look like this: {"King of spades":10, "Jack of Clubs": 20, "Total": dict[0] + dict[1]}
 
+    # LOOP THROUGH PLAYERS AND DEALS THEIR CARDS
     for i in players:
-        players_card1 = random.choice(list(cards))
-        players_card2 = random.choice(list(cards))
-        players_card_total = cards[players_card1] + cards[players_card2]
+        total = 0
 
-        print(players_card1)
-        print(players_card2)
-        print(players_card_total)
+        players_card1 = random.choice(list(cards))
+        total += cards.pop(players_card1) 
+
+        players_card2 = random.choice(list(cards))
+        total += cards.pop(players_card2)
+
+        print("\n{}, your cards are {} and {}, your cards add up to {}.".format(i.name, players_card1, players_card2, total))
+
+        response = input("Hit or Stand?")
+
+         # If the user hits, a new card will be drawn
+        while (response.lower() != "stand"):
+            new_card = random.choice(list(cards))
+            total += cards.pop(new_card)
+            
+            print("The card you drew was: {}, your total is now {}".format(new_card, total))
+
+            if (total <= 21):
+                response = input("Hit or Stand? ")
+            else:
+                print("{} has busted!".format(i.name))
+                total = 0
+                break
+
+        i.total = total
+
+    # DEALER IS DRAWING NOW
+    print("\nDEALER WILL NOW DRAW HIS CARDS")
+    dealer_total = 0
+    dealer = Player("Dealer", 100000)
+    dealer_card1 = random.choice(list(cards))
+    dealer_total += cards.pop(dealer_card1)
+    dealer_card2 = random.choice(list(cards))
+    dealer_total += cards.pop(dealer_card2)
+
+    print("Dealer's cards are {} and {}. Total is {}".format(dealer_card1, dealer_card2, dealer_total))
+
+    # DEALER DRAWS CARD IF TOTAL IS LESS THAN 15
+    while (dealer_total < 15):
+        new_card = random.choice(list(cards))
+        dealer_total += cards.pop(new_card)
+        print("Dealer draws a {}!, Dealer's total is now {}".format(new_card, dealer_total))
+
+
+    if (dealer_total > 21):
+        print("Dealer has busted with a total of {}! All players win {}!".format(dealer_total, bet * 2))
+        for i in players:
+            i.cash += (bet * 2)
+    else:
+        print("Dealer's total is {}".format(dealer_total))
+        for i in players:
+            if (i.total < dealer_total):
+                print("{}, with card total of {}, has lost against the Dealer!".format(i.name, i.total))
+            elif (i.total > dealer_total):
+                print("{}, with card total of {}, has won against the Dealer!".format(i.name, i.total))
+                i.cash += (bet * 2)
+            else:
+                print("{} and the Dealer has tied! returning bets...".format(i.name))
+
+    replay(players)
+    
     
 
+def replay(players_list):
+    print("-----------------------------")
+    reply = input("Would you like to play again? ('Y' or 'N')")
+    
+    if (reply.upper() == "Y"):
+        bets(players_list)
+    elif (reply.upper() == "N"):
+        print("Exiting program....Thanks for playing")
+        exit()
+    else:
+        print("Invalid response!")
+        replay(players_list)
 
     
 
         
     
+intro()
 
-
-
-players = intro()
-bets(players)
