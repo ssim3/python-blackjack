@@ -6,7 +6,7 @@ class Player:
     def __init__(self, input_name, input_cash):
         self.name = input_name
         self.cash = input_cash
-        self.cards = {"card1": 0, "card2": 0}
+        self.cards = {"card1": 0, "card2": 0, "total": 0}
 
     def __repr__(self):
         info = "Name = {} \nCash = {}".format(self.name, self.cash)
@@ -49,7 +49,39 @@ a88aaaa8P'  Y8aa8P     88    88aaaaa88a 88     88 88     88    a88aaaa8P' 88    
     
     return players
 
-def game(player_list):
+def bets(player_list):
+
+    
+
+    
+    bet = int(input("\nEnter your bet (Maximum 100000): "))
+    
+    valid_players = []
+
+    # SUBTRACTING THE BETS FROM EACH PLAYER
+    for i in player_list:
+        # Makes sure player has enough money, appending them to valid_players if they do
+        if (i.cash > bet):
+            i.bet(bet)
+            valid_players.append(i)          
+        else:
+            print("{} is too broke to bet, removed from the game.".format(i.name))
+        
+    if (len(valid_players) < 1):
+        print("ALL PLAYERS ARE TOO BROKE TO BET, EXITING PROGRAM")
+        exit()
+
+    game(valid_players, bet=bet)
+            
+    
+    
+def game(players, bet):
+    
+    dealer = Player("Dealer", 1000000000)
+
+    players.append(dealer)
+
+    print(players)
 
     cards = {"Ace of Clubs": 1, "Ace of Diamonds": 1, "Ace of Hearts": 1, "Ace of Spades": 1, 
     "2 of Clubs": 2, "2 of Diamonds": 2, "2 of Hearts": 2, "2 of Spades": 2,
@@ -65,28 +97,20 @@ def game(player_list):
     "Queen of Clubs": 10, "Queen of Diamonds": 10, "Queen of Hearts": 10, "Queen of Spades": 10,
     "Jack of Clubs": 10, "Jack of Diamonds": 10, "Jack of Hearts": 10, "Jack of Spades": 10}
 
-    dealer = Player("Dealer", 1000000000)
-    bet = int(input("\nEnter your bet (Maximum 100000): "))
+    drawn_cards = []
     
-    valid_players = []
+    # for i in players
+    # pick a random card from dictionary, remove that card, add it to new dictionary
+    # Each player dict should look like this: {"King of spades":10, "Jack of Clubs": 20, "Total": dict[0] + dict[1]}
 
-    # SUBTRACTING THE BETS FROM EACH PLAYER
-    for i in player_list:
-        # Makes sure player has enough money
-        if (i.cash > bet):
-            i.bet(bet)
-            valid_players.append(i)          
-        else:
-            print("{} is too broke to bet, removed from the game.".format(i.name))
-        
-            
-    print(valid_players)
-    
-    print("\n ------------------------------------- ")
-    print("\nCARDS WILL NOW BE DRAWN!")
+    for i in players:
+        players_card1 = random.choice(list(cards))
+        players_card2 = random.choice(list(cards))
+        players_card_total = cards[players_card1] + cards[players_card2]
 
-    
-
+        print(players_card1)
+        print(players_card2)
+        print(players_card_total)
     
 
 
@@ -98,4 +122,4 @@ def game(player_list):
 
 
 players = intro()
-game(players)
+bets(players)
